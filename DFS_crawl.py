@@ -2,8 +2,10 @@
 # Depth-First crawler #
 #######################
 
+import check
 import crawler_utils
 import heapq
+import MySQLdb as mdb
 import os
 import re
 import sys
@@ -11,9 +13,6 @@ import threading
 import time
 import urlparse
 import urllib
-import saveData
-import MySQLdb as mdb
-import check
 from bs4 import BeautifulSoup
 from collections import deque
 from time import ctime,sleep
@@ -21,7 +20,6 @@ import wordcloudprint
 
 
 start_url = "http://www.geeksforgeeks.org"
-
 
 # DFS
 urls = [start_url] # stack of urls
@@ -58,7 +56,8 @@ def dfs_search(keyword):
 			print "Title: " + soup.title.text
 			
 			#preserve data into database
-			saveData.saveDataInDB(soup.title.text, urls[0], time.strftime('%Y-%m-%d-%H-%M-%S',time.localtime(time.time())), keyword + "_dfs")			
+			crawler_utils.save_data_in_DB(soup.title.text, urls[0], time.strftime('%Y-%m-%d-%H-%M-%S', \
+				time.localtime(time.time())), keyword + "_dfs")			
 			urls.pop(0)
 			print "We already visited " + str(len(visitied)) + " websites" 
 			
@@ -86,7 +85,7 @@ def dfs_search(keyword):
 				crawler_utils.download_image(directory, image_tag.get("src"))
 
 		except KeyboardInterrupt:
-			print "\nPausing...  (Hit ENTER to continue, type quit to exit, type print you can print the word cloud image for current webpage)"
+			print "\nPausing...  (Hit ENTER to continue, type quit to exit, type print you can print he word cloud image for current webpage)"
 
 			response = raw_input()
 			if response == "print":
@@ -97,7 +96,7 @@ def dfs_search(keyword):
 				# Print out top pages by number of relevant urls			
 				crawler_utils.get_top_scored_pages(heap)
 				# When quit, store the visited and unvisitWebs into database
-				saveData.saveWebsInTwoList(keyword, "dfs", urls, visitied)
+				crawler_utils.save_webs_in_two_list(keyword, "dfs", urls, visitied)
 				
 				break
 			else:

@@ -2,8 +2,10 @@
 # Breath-First crawler #
 ########################
 
+import check
 import crawler_utils
 import heapq
+import MySQLdb as mdb
 import os
 import re
 import sys
@@ -14,14 +16,9 @@ import urllib
 from bs4 import BeautifulSoup
 from collections import deque
 from time import ctime,sleep
-import saveData
-import MySQLdb as mdb
-import check
 import wordcloudprint
 
 start_url = "http://www.geeksforgeeks.org"
-
-
 
 # BFS
 urls = deque([start_url]) # stack of urls
@@ -59,7 +56,8 @@ def bfs_search(keyword):
 			title = soup.title.text
 			print "Title: " + soup.title.text
 			
-			saveData.saveDataInDB(soup.title.text, urls[0], time.strftime('%Y-%m-%d-%H-%M-%S',time.localtime(time.time())), keyword + "_bfs")			
+			crawler_utils.save_data_in_DB(soup.title.text, urls[0], time.strftime('%Y-%m-%d-%H-%M-%S', \
+				time.localtime(time.time())), keyword + "_bfs")			
 			urls.popleft()
 			print "We already visited " + str(len(visitied)) + " websites" 
 			
@@ -98,7 +96,7 @@ def bfs_search(keyword):
 				# Print out top pages by number of relevant urls			
 				crawler_utils.get_top_scored_pages(heap)
 				# When quit, store the visited and unvisitWebs into database
-				saveData.saveWebsInTwoList(keyword, "bfs", urls, visitied)
+				crawler_utils.save_webs_in_two_list(keyword, "bfs", urls, visitied)
 				break
 			else:
 				continue

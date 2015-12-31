@@ -12,7 +12,7 @@
     6. MySql
 * Prior to building the project, make sure that you have all the external packages installed by running:
 ```
-sudo pip install wordcloud image matplotlib beautifulsoup4 prettytable mysql
+sudo pip install wordcloud image matplotlib beautifulsoup4 prettytable mysql-python
 ```
 
 ### Running the Crawler
@@ -27,27 +27,14 @@ sudo pip install wordcloud image matplotlib beautifulsoup4 prettytable mysql
     * control + C
     * To resume, press any key
     * To exit, type "quit"
+    * To print the wordCloud Imge, type "print"
 
 ### Important Note About Email Notification Feature
 * Since we do not maintain an email server, emails are sent to the Gmail server (other types of email accounts are currently not supported)
 * In order to use the email notification feature, users need to have a Gmail account (or sign up for one)
 * Users need to allow "less secure apps" in their Gmail settings 
 
-## Project Requirements
-
-According to the project handout, our crawler needs to have the following features at the very least:
-* Takes as input keywords that must be present on a web page
-* Recursively crawls links on a web page
-* User may specify breadth-first or depth-first crawling
-* Rests at least two seconds between each recursive step for pages within the same domain (no rest required for pages on other domains)
-* Can be terminated at any time by the user
-* Has no preset limit to recursion depth
-* Stores data in a database
-* Provides real-time status to the user about how many pages has been crawled, what is currently being crawled, what is planned, etc. (use some creativity here)
-* May be either command line or web-based application.
-* Define at least four additional features not listed above
-
-## Database part
+### Database part
 * This project uses mysql database
 * This project assumes that you have already create a database named "test" in mysql. And you should have a database user named "root", the passwprd should be "root".
 the database will store the data in local machine.
@@ -60,3 +47,22 @@ store the websites in unvisited list named KEYWORDunvisited_dfs(bfs), in otherwo
 * Every time when the code starts, the code will check if there are responding table in database, if yes, user can choose start from the previous point or restart 
 from the beginning.
 * There is a file named "saveDate" which contains functions to put one record into database once.
+
+### Basic Feagures (Project Requirements)
+According to the project handout, our crawler needs to have the following features at the very least:
+* Takes as input keywords that must be present on a web page
+* Recursively crawls links on a web page
+* User may specify breadth-first or depth-first crawling
+* Rests at least two seconds between each recursive step for pages within the same domain (no rest required for pages on other domains)
+* Can be terminated at any time by the user
+* Has no preset limit to recursion depth
+* Stores data in a database
+* Provides real-time status to the user about how many pages has been crawled, what is currently being crawled, what is planned, etc. (use some creativity here)
+* May be either command line or web-based application.
+* Define at least four additional features not listed above
+
+### Addtional Feature
+* User can set his email, when the routine is finished, rontine would send an email mention user this situation
+* User can print current web page as wordcloud image
+* Routine would compute the score of each web page base on the number of outlinks containing the given keyword
+* When the crawler finishes (or user terminated), routine would print a top 10 relevant web page according to the grade of each web page
